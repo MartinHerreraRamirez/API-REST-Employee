@@ -33,38 +33,29 @@ public class EmployeeRepository {
 
 
     public List<Employee> getAllEmployees(){
-
         return listEmployee;
     }
 
 
     public Employee getEmployee(String id){
-
-        return (Employee) listEmployee
-                            .stream()
-                            .filter(employee -> employee.getId().equals(id));
+        Optional<Employee> responseEmployee = listEmployee
+            .stream().filter(employee -> employee.getId().equals(id)).findFirst();
+        
+        return (Employee) responseEmployee.orElse(null);
     }
 
 
-    public Employee updateEmployee(Employee employee){
+    public Employee updateEmployee(Employee employee){        
 
-        String employeeId = employee.getId();
-
-        for(int i = 0; i < listEmployee.size(); i++){
-
-            if(listEmployee.get(i).getId() == employeeId){
-                listEmployee.set(i, employee);
-            }
-        }
-
-        return employee;
+        listEmployee.removeIf(findEmployee -> findEmployee.getId().equals(employee.getId()));
+        listEmployee.add(employee);
+        return employee;        
     }
 
 
-    public String deleteEmployeeById(String id){
+    public void deleteEmployeeById(String id){
 
-        listEmployee.removeIf(employee -> employee.getId() == id);
-        return "employee was deleted";
+        listEmployee.removeIf(employee -> employee.getId().equals(id));
     }
 
 

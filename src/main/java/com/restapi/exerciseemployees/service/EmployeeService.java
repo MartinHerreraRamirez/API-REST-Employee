@@ -35,10 +35,9 @@ public class EmployeeService {
         return employeeRepository.updateEmployee(employee);
     }
 
-    public String deleteEmployee(String id){
+    public void deleteEmployee(String id){
 
         employeeRepository.deleteEmployeeById(id);
-        return "Employee " + id + "was deleted";
     }
 
     public Employee findEmployeeByEmail(String email){

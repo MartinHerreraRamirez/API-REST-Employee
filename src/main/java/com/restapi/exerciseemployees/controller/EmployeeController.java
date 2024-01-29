@@ -44,7 +44,7 @@ public class EmployeeController {
         return employeeService.salaryGreaterThan1000();
     }
 
-    @GetMapping("experience")
+    @GetMapping("/experience")
     public List<Employee> experienceGreaterThan5(){
         return employeeService.experienceGreaterThan5();
     }
@@ -60,8 +60,9 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEmployee(@PathVariable String id){
+    public String deleteEmployee(@PathVariable String id){
         employeeService.deleteEmployee(id);
+        return "Employee with id: " + id + " was deleted";
     }    
     
 }
