@@ -2,6 +2,7 @@ package com.restapi.exerciseemployees.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
@@ -11,16 +12,27 @@ import com.restapi.exerciseemployees.model.Employee;
 @Repository
 public class EmployeeRepository {
 
-    ArrayList<Employee> listEmployee = new ArrayList<>();
+    List<Employee> listEmployee = new ArrayList<>();
 
     public Employee saveEmployee(Employee employee){
 
-        listEmployee.add(employee);
-        return employee;
+        Employee employee1 = new Employee();
+
+        employee1.setId(employee.getId());
+        employee1.setFirstName(employee.getFirstName());
+        employee1.setLastName(employee.getLastName());
+        employee1.setAge(employee.getAge());
+        employee1.setEmail(employee.getEmail());
+        employee1.setPhone(employee.getPhone());
+        employee1.setSalary(employee.getSalary());
+        employee1.setYearsOfExperience(employee.getYearsOfExperience());
+
+        listEmployee.add(employee1);
+        return employee1;
     }
 
 
-    public ArrayList<Employee> getAllEmployees(){
+    public List<Employee> getAllEmployees(){
 
         return listEmployee;
     }
@@ -56,11 +68,13 @@ public class EmployeeRepository {
     }
 
 
-    public List<Employee> findEmployeeByEmail(String email){
+    public Employee findEmployeeByEmail(String email){
      
-        return listEmployee.stream()
+        Optional<Employee> responseEmployee = listEmployee.stream()
                 .filter(employee -> employee.getEmail().equals(email))
-                .collect(Collectors.toList());
+                .findFirst();
+        
+        return responseEmployee.orElse(null);
     } 
 
 
@@ -71,7 +85,7 @@ public class EmployeeRepository {
     }
 
 
-    public List<Employee> employeesExperienceGreaterThan5(){
+    public List<Employee> experienceGreaterThan5(){
         return listEmployee.stream()
                 .filter(employee -> 
                 Integer.parseInt(employee.getYearsOfExperience()) > 5)
